@@ -1,0 +1,64 @@
+@layout('layouts/app')
+@section('main')
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <div class="panel-bod">
+                        <table class="table">
+
+                            <!-- Table Headings -->
+                            <thead>
+                                <th>商品名称</th>
+                                <th>商品价格</th>
+                                <th>商品库存</th>
+                                <th>&nbsp;</th>
+                            </thead>
+
+                            <!-- Table Body -->
+                            <tbody class="max-w-full">
+                                <tr class="max-w-full">
+                                    <!-- Task Name -->
+                                    <td class="pt-5 pb-5 pr-5">
+                                        <!-- <div class=""> -->
+                                        <h1 class="sm:font-bold">{{ item.name}}</h1>
+                                        <p>{{ item.desc }}</p>
+                                        <div class="flex content-between">
+                                            {{--  <p class="pt-2 text-gray-500 pr-5"> Added By: {{ item.user.name }}</p>  --}}
+                                            <p class="pt-2 text-gray-500"> : {{ item.isSoldout== true? "已售完": "未售完"}}</p>
+                                        </div>
+                                        <div class="flex content-between">
+                                            <p class="pt-2 text-gray-500"> : {{ item.isReleased== true? "上架": "未上架"}}</p>
+                                        </div>
+
+                                    </td>
+                                    <td class="pt-5 pb-5 pr-5">
+                                        <h1 class="sm:font-bold">{{ item.price}}</h1>
+                                    </td>
+                                    <td class="pt-5 pb-5 pr-5">
+                                        <h1 class="sm:font-bold">{{ item.stock}}</h1>
+                                    </td>
+
+
+                                    <td>
+                                        <!-- TODO: Delete Button -->
+                                    <div>
+                                        @if(item.userId == auth.user.id)
+                                        <a href="/shopadmin/v1/items/{{item.id}}/edit" class="bg-yellow-500 btn btn-primary">编辑</a>
+                                        <form class="" method="POST" action="/shopadmin/v1/items/{{item.id}}?_method=DELETE">
+                                            {{ csrfField() }}
+                                            <button class="bg-red-500  btn btn-danger">删除</button>
+                                        </form>
+                                        @endif
+                                    </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
