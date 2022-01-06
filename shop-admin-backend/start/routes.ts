@@ -14,12 +14,28 @@
 | and then import them inside `start/routes.ts` as follows
 |
 | import './routes/cart'
-| import './routes/customer'
+| import './routes/customer''
 |
 */
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
+
+//sys navigation 
+Route.get('/', async ({ view }) => {
+  return view.render('welcome')
 })
+
+Route.on("login").render("login");
+Route.post("/login", "AuthController.login");
+Route.on("register").render("register");
+Route.post("register", "AuthController.register");
+//Route.post("/logout", "AuthController.login").as("logout");
+
+Route.group(() => {
+  Route.get("/home", "ShopItemsController.index").as("home");
+  Route.resource("items", "ShopItemsController");
+  Route.get("/items/user", "ShopItemsController.byUid");
+}).prefix("/shopadmin/v1")
+  //.middleware("auth");
+

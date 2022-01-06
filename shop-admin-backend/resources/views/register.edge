@@ -1,0 +1,34 @@
+
+@layout('layouts/app')
+@section('main')
+
+  <form action="{{ route('AuthController.register') }}" method="post">
+    <div>
+      <label for="name">姓名</label>
+      <input type="text" name="name" value="{{ flashMessages.get('name') || '' }}" />
+      <p>{{ flashMessages.get('errors.name') || '' }}</p>
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input type="text" name="email" value="{{ flashMessages.get('email') || '' }}" />
+      <p>{{ flashMessages.get('errors.email') || '' }}</p>
+    </div>
+
+    <div>
+      <label for="password">密码</label>
+      <input type="password" name="password" />
+      <p>{{ flashMessages.get('errors.password') || '' }}</p>
+    </div>
+
+    <div>
+      <label for="password_confirmation">重新输入密码</label>
+      <input type="password" name="password_confirmation" />
+      <p>{{ flashMessages.get('errors.password_confirmation') || '' }}</p>
+    </div>
+
+    <div>
+      <button type="submit">注册</button>
+    </div>
+  </form>
+
+@endsection
