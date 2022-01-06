@@ -37,5 +37,5 @@ Route.group(() => {
   Route.resource("items", "ShopItemsController");
   Route.get("/items/user", "ShopItemsController.byUid");
 }).prefix("/shopadmin/v1")
-  //.middleware("auth");
+  .middleware("auth");
 
