@@ -77,6 +77,7 @@ export default class ShopItemsController {
     // put /items/:id
     public async update(ctx: HttpContextContract) {
         const item = await ShopItem.find(ctx.params.id)
+        console.log(item)
 
         if (item) {
             item.name = ctx.request.input('name')

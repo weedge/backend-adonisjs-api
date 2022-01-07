@@ -35,6 +35,7 @@ Route.post("register", "AuthController.register");
 Route.group(() => {
   Route.get("/home", "ShopItemsController.index").as("home");
   Route.get("/items/user", "ShopItemsController.byUid");
+  Route.post("/items/:id", "ShopItemsController.update");
   Route.resource("items", "ShopItemsController");
 }).prefix("/shopadmin/v1")
   .middleware("auth");
