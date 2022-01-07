@@ -9,6 +9,13 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/shopadmin/v1/home/">商品管理</a>
         </li>
+        <li class="nav-item">
+          @if(auth.user)
+          <a class="nav-link active" aria-current="page" href="/login">用户退出</a>
+          @else
+          <a class="nav-link active" aria-current="page" href="/login">用户登陆</a>
+          @endif
+        </li>
       </ul>
     </div>
   </div>

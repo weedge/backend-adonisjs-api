@@ -26,12 +26,11 @@ Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
 
-Route.on("login").render("login");
-Route.post("/login", "AuthController.login");
-Route.on("register").render("register");
-Route.post("register", "AuthController.register");
-//Route.post("/logout", "AuthController.login").as("logout");
-
+Route.on("login").render("login")
+Route.post("/login", "AuthController.login")
+Route.on("register").render("register")
+Route.post("register", "AuthController.register")
+Route.post("/logout", "AuthController.logout")
 
 Route.group(() => {
   Route.resource("posts", "PostsController")

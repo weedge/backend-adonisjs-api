@@ -1,22 +1,28 @@
-
 @layout('layouts/app')
 @section('main')
-  <form action="{{ route('AuthController.login') }}" method="post">
-    <div>
-      <label for="email">Email</label>
-      <input type="text" name="email" value="{{ flashMessages.get('email') || '' }}" />
-      <p>{{ flashMessages.get('auth.errors.uid') || '' }}</p>
-    </div>
-{{ csrfField() }}
-    <div>
-      <label for="password">密码</label>
-      <input type="password" name="password" />
-      <p>{{ flashMessages.get('auth.errors.password') || '' }}</p>
-    </div>
 
-    <div>
-      <button type="submit">登陆</button>
-      <button><a href="/register" class="btn"">注册</a></button>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                      <form class="max-w-full" action="{{ route('AuthController.login') }}" method="post">
+                        <div class="form-group mb-3">
+                            <label class="">Email</label>
+                              <input class="form-control" name="email" value="{{ flashMessages.get('email') || '' }}" />
+                            <p>{{ flashMessages.get('auth.errors.uid') || '' }}</p>
+                        </div>
+                        {{ csrfField() }}
+                        <div class="form-group mb-3">
+                            <label class="">密码</label>
+                              <input class="form-control" name="password" value="{{ flashMessages.get('password') || '' }}" />
+                            <p>{{ flashMessages.get('auth.errors.password') || '' }}</p>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">登陆</button>
+                        <button><a href="/register" class="btn"">注册</a></button>
+                      </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </form>
 @endsection

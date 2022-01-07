@@ -44,4 +44,9 @@ export default class AuthController {
 
         response.redirect("/shopadmin/v1/home");
     }
+
+    public async logout({ auth, response }: HttpContextContract) {
+        await auth.use('web').logout()
+        response.redirect("/login");
+    }
 }
