@@ -42,9 +42,9 @@
                                 <td>
                                     <div>
                                         <a href="/shopadmin/v1/items/{{item.id}}" class="bg-green-500 btn btn-success">查看</a>
-                                        @if(item.userId == auth.user.id)
                                         <a href="/shopadmin/v1/items/{{item.id}}/edit" class="bg-yellow-500 btn btn-primary">编辑</a>
 
+                                        @if(auth.user.isAdmin==true)
                                         <form class="" method="POST" action="/shopadmin/v1/items/{{item.id}}?_method=DELETE">
                                             {{ csrfField() }}
                                             <button class="bg-red-500  btn btn-danger">删除</button>

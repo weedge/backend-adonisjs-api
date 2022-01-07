@@ -114,9 +114,10 @@ export default class ShopItemsController {
     public async byUid(ctx: HttpContextContract) {
         const user = await ctx.auth.authenticate()
         const uItem = await UserItem.query().where('user_id', '=', user.id)
+        console.log(uItem)
         let itemIds = Array()
         uItem.forEach(element => {
-            itemIds.push(element.id)
+            itemIds.push(element.shopItemId)
         });
         const items = await ShopItem.findMany(itemIds)
 
