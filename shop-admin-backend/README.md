@@ -4,10 +4,10 @@
 npm install
 ```
 
-Duplicate `.env.example`:
+Duplicate `.env.dev`:
 
 ```bash
-cp env.example .env
+cp env.dev .env
 ```
 
 Generate `APP_KEY`:
