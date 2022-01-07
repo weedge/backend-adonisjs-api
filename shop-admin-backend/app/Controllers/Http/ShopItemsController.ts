@@ -8,7 +8,8 @@ import UserItem from 'App/Models/UserItem';
 export default class ShopItemsController {
     // get /items
     public async index(ctx: HttpContextContract) {
-        const items = await ShopItem.query().preload('userItems')
+        const items = await ShopItem.query().where('is_del', '=', 0).orderBy('id', 'desc')
+        //console.log(items)
 
         return ctx.view.render('home', { items })
     }
@@ -51,7 +52,7 @@ export default class ShopItemsController {
         uItem.shopItemId = item.id
         await uItem.save()
 
-        console.log(item.id, uItem.id)
+        //console.log(item.id, uItem.id)
 
         ctx.response.redirect('/shopadmin/v1/items/' + item.id)
     }
@@ -60,6 +61,7 @@ export default class ShopItemsController {
     public async show(ctx: HttpContextContract) {
         try {
             const item = await ShopItem.find(ctx.params.id)
+            //console.log(item)
             return ctx.view.render('show', { item })
         } catch (error) {
             console.log(error)

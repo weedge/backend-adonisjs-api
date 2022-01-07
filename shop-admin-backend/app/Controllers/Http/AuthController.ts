@@ -33,7 +33,7 @@ export default class AuthController {
         Event.emit('new:user', user)
 
         await auth.login(user);
-        response.redirect("/dashboard");
+        response.redirect("/shopadmin/v1/home");
     }
 
     public async login({ auth, request, response }: HttpContextContract) {
@@ -41,6 +41,6 @@ export default class AuthController {
         const password = request.input("password");
         await auth.attempt(email, password);
 
-        response.redirect("/dashboard");
+        response.redirect("/shopadmin/v1/home");
     }
 }
