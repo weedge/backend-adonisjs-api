@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, hasMany, HasMany, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 import UserItem from './UserItem'
+import User from './User'
 
 //https://docs.adonisjs.com/reference/orm/base-model
 export default class ShopItem extends BaseModel {
@@ -9,6 +10,9 @@ export default class ShopItem extends BaseModel {
   //https://docs.adonisjs.com/reference/orm/decorators#column
   @column({ isPrimary: true })
   public id: number
+
+  @column({ columnName: "owner_id" })
+  public userId: number
 
   @column()
   public name: string
@@ -39,6 +43,9 @@ export default class ShopItem extends BaseModel {
 
   @hasMany(() => UserItem)
   public userItems: HasMany<typeof UserItem>
+
+  @belongsTo(() => User)
+  public owner: BelongsTo<typeof User>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

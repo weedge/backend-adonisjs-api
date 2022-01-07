@@ -7,6 +7,7 @@ export default class TblShopItems extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
+      table.integer('owner_id', 20).unsigned().notNullable().index('uid')
       table.string('name', 32).notNullable()
       table.string('desc', 1024).defaultTo("").notNullable()
       table.integer('price', 10).unsigned().notNullable()

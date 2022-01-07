@@ -11,6 +11,9 @@ export default class TblUserItems extends BaseSchema {
       table.string('ext', 10240).defaultTo("").notNullable()
       table.timestamps(true)
     })
+    this.schema.alterTable(this.tableName, (table) => {
+      table.index(['user_id', 'item_id'], 'idx_uid_sid')
+    })
   }
 
   public async down() {

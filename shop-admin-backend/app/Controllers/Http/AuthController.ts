@@ -2,6 +2,7 @@ import User from "App/Models/User";
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Event from '@ioc:Adonis/Core/Event'
+import Logger from '@ioc:Adonis/Core/Logger'
 
 export default class AuthController {
     public async register({ request, auth, response }: HttpContextContract) {
@@ -11,7 +12,7 @@ export default class AuthController {
         const validationSchema = schema.create({
             email: schema.string({ trim: true }, [
                 rules.email(),
-                rules.unique({ table: "users", column: "email" }),
+                rules.unique({ table: "tbl_users", column: "email" }),
             ]),
             password: schema.string({ trim: true }, [rules.confirmed()]),
         });

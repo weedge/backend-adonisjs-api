@@ -32,11 +32,17 @@ Route.on("register").render("register");
 Route.post("register", "AuthController.register");
 //Route.post("/logout", "AuthController.login").as("logout");
 
+
 Route.group(() => {
-  Route.get("/home", "ShopItemsController.index").as("home");
+  Route.resource("posts", "PostsController")
+}).prefix("/prefix/v1")
+
+Route.group(() => {
+  Route.get("/home", "ShopItemsController.index");
   Route.get("/items/user", "ShopItemsController.byUid");
-  Route.post("/items/:id", "ShopItemsController.update");
-  Route.resource("items", "ShopItemsController");
+  Route.post("/items/:id", "ShopItemsController.post");
+  //https://docs.adonisjs.com/guides/controllers#resourceful-routes-and-controllers
+  Route.resource("items", "ShopItemsController")
+  //.except(['update', 'destroy']);
 }).prefix("/shopadmin/v1")
   .middleware("auth");
-

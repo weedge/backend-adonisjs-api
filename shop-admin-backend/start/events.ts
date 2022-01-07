@@ -16,7 +16,8 @@ import Application from '@ioc:Adonis/Core/Application'
 
 
 Event.on('new:user', (user) => {
-    console.log(user)
+    //console.log(user)
+    Logger.info("create new user to send email, userInfo:%o", user.toJSON())
     //@TODO: send email
 })
 

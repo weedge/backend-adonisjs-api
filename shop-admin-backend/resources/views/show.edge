@@ -50,15 +50,17 @@
 
 
                                     <td>
-                                        <!-- TODO: Delete Button -->
                                     <div>
+                                        @if(auth.user.id == item.userId)
                                         <a href="/shopadmin/v1/items/{{item.id}}/edit" class="bg-yellow-500 btn btn-primary">编辑</a>
-                                        <form class="" method="POST" action="/shopadmin/v1/items/{{item.id}}?_method=DELETE">
-                                            {{ csrfField() }}
                                         @if(auth.user.isAdmin == true)
+                                        <form class="" method="POST" action="/shopadmin/v1/items/{{item.id}}">
+                                            <input type="hidden" name="_method" value="DELETE"/>
+                                            {{ csrfField() }}
                                             <button class="bg-red-500  btn btn-danger">删除</button>
-                                        @endif
                                         </form>
+                                        @endif
+                                        @endif
                                     </div>
                                     </td>
                                 </tr>

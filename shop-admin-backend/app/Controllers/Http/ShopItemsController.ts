@@ -1,14 +1,15 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
-import Database from '@ioc:Adonis/Lucid/Database';
+//import Database from '@ioc:Adonis/Lucid/Database';
 import ShopItem from 'App/Models/ShopItem';
-import Users from 'App/Models/User';
+//import Users from 'App/Models/User';
 import UserItem from 'App/Models/UserItem';
+import Logger from '@ioc:Adonis/Core/Logger'
 
 export default class ShopItemsController {
     // get /items
     public async index(ctx: HttpContextContract) {
-        const items = await ShopItem.query().where('is_del', '=', 0).orderBy('id', 'desc')
+        const items = await ShopItem.query().preload('owner');
         //console.log(items)
 
         return ctx.view.render('home', { items })
@@ -45,11 +46,14 @@ export default class ShopItemsController {
         item.desc = itemDetail.desc
         item.price = itemDetail.price
         item.stock = itemDetail.stock
-        await item.save()
+        await user.related('shopItems').save(item)
+        //item.userId = user.id
+        //await item.save()
 
         const uItem = new UserItem()
         uItem.userId = user.id
         uItem.shopItemId = item.id
+        uItem.ext = "insert op userId:" + user.id + " shopItemId:" + item.id
         await uItem.save()
 
         //console.log(item.id, uItem.id)
@@ -64,7 +68,7 @@ export default class ShopItemsController {
             //console.log(item)
             return ctx.view.render('show', { item })
         } catch (error) {
-            console.log(error)
+            Logger.error("%o", error)
         }
     }
 
@@ -74,21 +78,35 @@ export default class ShopItemsController {
         return ctx.view.render('edit', { item })
     }
 
+    // post /items/:id
+    public async post(ctx: HttpContextContract) {
+        switch (ctx.request.input('_method')) {
+            case 'DELETE':
+                return this.destroy(ctx)
+            case 'PUT':
+                return this.update(ctx)
+            default:
+                Logger.warn("un support method:%s", ctx.request.input('_method'))
+        }
+        ctx.response.redirect('/shopadmin/v1/home')
+    }
+
     // put /items/:id
     public async update(ctx: HttpContextContract) {
         const item = await ShopItem.find(ctx.params.id)
-        console.log(item)
 
         if (item) {
             item.name = ctx.request.input('name')
             item.desc = ctx.request.input('desc')
             item.price = ctx.request.input('price')
             item.stock = ctx.request.input('stock')
+            item.isReleased = ctx.request.input('isReleased')
             if (await item.save()) {
                 const user = await ctx.auth.authenticate()
                 const uItem = new UserItem()
                 uItem.userId = user.id
                 uItem.shopItemId = item.id
+                uItem.ext = "update op userId:" + user.id + " shopItemId:" + item.id
                 //uItem.save()
                 await uItem.save()
                 return ctx.view.render('show', { item })
@@ -107,13 +125,19 @@ export default class ShopItemsController {
             return ctx.response.redirect('/home')
         }
 
-        return // 500
+        ctx.response.redirect('/shopadmin/v1/home')
     }
 
     //==== other controller method to op resource====
 
     public async byUid(ctx: HttpContextContract) {
         const user = await ctx.auth.authenticate()
+        const items = await ShopItem.query()
+            //.select('id', 'name', 'desc')
+            .select('*')
+            .where('owner_id', user.id).orderBy('id', 'desc')
+
+        /*
         const uItem = await UserItem.query().where('user_id', '=', user.id)
         console.log(uItem)
         let itemIds = Array()
@@ -121,6 +145,7 @@ export default class ShopItemsController {
             itemIds.push(element.shopItemId)
         });
         const items = await ShopItem.findMany(itemIds)
+        */
 
         return ctx.view.render('home', { items })
     }
