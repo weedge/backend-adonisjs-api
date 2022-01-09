@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
-import Ticket from './Ticket'
-import Event from './Event'
+import UserOrder from './UserOrder'
+import ShopItem from './ShopItem'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -29,11 +29,8 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @hasMany(() => Ticket)
-  public tickets: HasMany<typeof Ticket>
-
-  @hasMany(() => Event)
-  public events: HasMany<typeof Event>
+  @hasMany(() => UserOrder)
+  public userOrders: HasMany<typeof UserOrder>
 
   @beforeSave()
   public static async hashPassword(user: User) {

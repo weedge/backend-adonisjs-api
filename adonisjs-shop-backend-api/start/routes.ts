@@ -21,8 +21,11 @@
 import Route from '@ioc:Adonis/Core/Route'
 import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
+Route.get('/meta', async () => {
+  return {
+    appName: 'shop',
+    version: '0.0.1',
+  }
 })
 
 // middleware
@@ -36,7 +39,7 @@ Route.get('/users/:id', async () => {
 
 //test pino logger
 //https://docs.adonisjs.com/guides/logger
-Route.post('/:action/:id/', ({ request, logger }) => {
+Route.post('/logger/:action/:id/', ({ request, logger }) => {
   console.log(request.all(), request.id())
   logger.info("uri:%s params:%o query:%o body:%o",
     request.url(), request.params(), request.qs(), request.body())
@@ -59,15 +62,21 @@ Route.get('health', async ({ response }) => {
   return report.healthy ? response.ok(report) : response.badRequest(report)
 })
 
+Route.group(() => {
+  Route.post("register", "AuthController.register").as("register");
+  Route.post("login", "AuthController.login").as("login");
+  Route.post("logout", "AuthController.logout").as("logout");
+}).prefix("auth")
+
 // /shop/api/v1
 Route.group(() => {
-  Route.group(() => {
-    Route.post("register", "AuthController.register").as("register");
-    Route.post("login", "AuthController.login").as("login");
-    Route.post("logout", "AuthController.logout").as("logout");
-  }).prefix("auth")
+  Route.get("/items", "ShopItemsController.list").as("list")
+  Route.get("/items/search", "ShopItemsController.search").as("search")
+  Route.get("/items/:id", "ShopItemsController.info").as("info")
 
-  Route.group(() => {
-  }).middleware("auth:api")
-    .middleware("userActionLog")
-}).prefix("shop/api/v1")
+  Route.post("/order", "UserOrdersController.order").as("order")
+  Route.get("/orders/:orderId", "UserOrdersController.info").as("orderInfo")
+  Route.get("/users/:uid/orders", "UserOrdersController.list").as("userOrders")
+}).prefix("/shop/api/v1")
+  //.middleware("auth:api")
+  .middleware("userActionLog")
