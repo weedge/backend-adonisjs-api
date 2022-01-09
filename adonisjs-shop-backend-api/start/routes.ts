@@ -66,7 +66,7 @@ Route.group(() => {
   Route.post("register", "AuthController.register").as("register");
   Route.post("login", "AuthController.login").as("login");
   Route.post("logout", "AuthController.logout").as("logout");
-}).prefix("auth")
+}).prefix("/api/v1/auth")
 
 // /shop/api/v1
 Route.group(() => {
