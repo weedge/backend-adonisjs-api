@@ -5,7 +5,7 @@ export default class ShopItemsController {
     public async list(ctx: HttpContextContract) {
         //@TODO page
         const items = await ShopItem.query()
-            .select('id', 'name', 'desc', 'price')
+            .select('id', 'name', 'desc', 'price', 'created_at')
             .where((query) => {
                 query.where("is_del", 0)
                     .where("is_soldout", 0)

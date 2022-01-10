@@ -57,6 +57,9 @@ export default class AuthController {
         // event on new user in start events.js to register
         Event.emit('new:user', user)
 
-        return token.toJSON()
+        return {
+            user,
+            token: token.toJSON().token,
+        }
     }
 }
