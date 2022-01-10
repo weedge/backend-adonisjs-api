@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import CreateUser from 'App/Validators/CreateUserValidator'
+import Event from '@ioc:Adonis/Core/Event'
 //import { schema, rules } from "@ioc:Adonis/Core/Validator";
 
 export default class AuthController {
@@ -53,6 +54,9 @@ export default class AuthController {
         const token = await auth.use('api').login(user, {
             expiresIn: '10 days',
         })
+        // event on new user in start events.js to register
+        Event.emit('new:user', user)
+
         return token.toJSON()
     }
 }

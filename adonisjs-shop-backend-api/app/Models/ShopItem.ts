@@ -1,11 +1,17 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
-import User from "./User"
+import { BaseModel, column, hasMany, HasMany, } from '@ioc:Adonis/Lucid/Orm'
 import UserOrder from './UserOrder'
 
+//https://docs.adonisjs.com/reference/orm/base-model
 export default class ShopItem extends BaseModel {
+  public static table = 'tbl_shop_items'
+
+  //https://docs.adonisjs.com/reference/orm/decorators#column
   @column({ isPrimary: true })
   public id: number
+
+  @column({ columnName: "owner_id" })
+  public ownerId: number
 
   @column()
   public name: string
@@ -19,20 +25,20 @@ export default class ShopItem extends BaseModel {
   @column()
   public stock: number
 
-  @column()
-  public sell_cn: number
+  @column({ columnName: "sell_cn" })
+  public sellCn: number
+
+  @column({ columnName: "is_soldout" })
+  public isSoldout: boolean
+
+  @column({ columnName: "is_released" })
+  public isReleased: boolean
+
+  @column({ columnName: "is_del" })
+  public isDel: boolean
 
   @column()
-  public is_released: boolean
-
-  @column()
-  public is_soldout: boolean
-
-  @column()
-  public is_del: boolean
-
-  @belongsTo(() => User)
-  public user: BelongsTo<typeof User>
+  public ext: string
 
   @hasMany(() => UserOrder)
   public userOrders: HasMany<typeof UserOrder>

@@ -2,9 +2,10 @@ import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import UserOrder from './UserOrder'
-import ShopItem from './ShopItem'
 
 export default class User extends BaseModel {
+  public static table = 'users'
+
   @column({ isPrimary: true })
   public id: number
 
@@ -13,9 +14,6 @@ export default class User extends BaseModel {
 
   @column()
   public name: string
-
-  @column()
-  public is_admin: boolean
 
   @column({ serializeAs: null })
   public password: string

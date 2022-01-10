@@ -74,9 +74,10 @@ Route.group(() => {
   Route.get("/items/search", "ShopItemsController.search").as("search")
   Route.get("/items/:id", "ShopItemsController.info").as("info")
 
-  Route.post("/order", "UserOrdersController.order").as("order")
-  Route.get("/orders/:orderId", "UserOrdersController.info").as("orderInfo")
-  Route.get("/users/:uid/orders", "UserOrdersController.list").as("userOrders")
+  Route.group(() => {
+    Route.post("/order", "UserOrdersController.order").as("order")
+    Route.get("/orders/:orderId", "UserOrdersController.info").as("orderInfo")
+    Route.get("/users/:uid/orders", "UserOrdersController.list").as("userOrders")
+  }).middleware("auth:api")
 }).prefix("/shop/api/v1")
-  //.middleware("auth:api")
   .middleware("userActionLog")

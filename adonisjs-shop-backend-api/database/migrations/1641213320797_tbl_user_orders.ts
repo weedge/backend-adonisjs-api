@@ -8,7 +8,7 @@ export default class TblUserOrders extends BaseSchema {
       table.increments('order_id').primary()
       table.integer('user_id', 20).unsigned().notNullable()
       table.integer('item_id', 20).unsigned().notNullable()
-      table.string('ext', 10240).notNullable()
+      table.string('ext', 10240).defaultTo("").notNullable()
 
       table.timestamps(true)
     })

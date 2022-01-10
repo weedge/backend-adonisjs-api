@@ -30,3 +30,9 @@ Event.on('db:query', (query) => {
         Database.prettyPrint(query)
     }
 })
+
+Event.on('new:order', (order) => {
+    //console.log(order)
+    Logger.info("create new order to send mq, userInfo:%o", order.toJSON())
+    //@TODO: send mq
+})
