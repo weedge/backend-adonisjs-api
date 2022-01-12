@@ -54,6 +54,17 @@ export default class UserOrdersController {
             itemMap[element.id] = element
         });
 
-        return { orders, itemMap }
+        //@TODO counter
+        const res = await UserOrder.query()
+            .count("")
+            .sum("pay_amount")
+            .where((query) => {
+                //query.where("user_id", ctx.params.uid)
+                query.where("user_id", user.id)
+            }).first()
+        const totalOrderCn = parseInt(res["count(*)"])
+        const totalCost = parseInt(res["sum(`pay_amount`)"])
+
+        return { orders, itemMap, totalOrderCn, totalCost }
     }
 }
