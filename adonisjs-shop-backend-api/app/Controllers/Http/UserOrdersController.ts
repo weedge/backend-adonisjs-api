@@ -2,13 +2,14 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import UserOrder from 'App/Models/UserOrder'
 import Event from '@ioc:Adonis/Core/Event'
 import ShopItem from 'App/Models/ShopItem'
-import User from 'App/Models/User'
+//import User from 'App/Models/User'
 
 export default class UserOrdersController {
     public async order(ctx: HttpContextContract) {
         const user = await ctx.auth.authenticate()
         const order = new UserOrder()
         order.itemId = parseInt(ctx.request.input('itemId'))
+        order.payAmount = parseInt(ctx.request.input('payAmount') ? ctx.request.input('payAmount') : 0)
         order.ext = "new shop item_id:" + order.itemId
         //order.userId = ctx.request.input('userId')
         order.userId = user.id
